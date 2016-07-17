@@ -1,9 +1,11 @@
-/*
+/* 
  Del Arduino Starter Kit
  Proyecto 2  - Spaceship Interface
  Creado el 13 de setiembre de 2012 por Scott Fitzgerald
  http://www.arduino.cc/starterKit
  Este ejemplo es parte del dominio público
+
+ Traducido por Luis Morales-Navarro
 
 
  Partes requeridas:

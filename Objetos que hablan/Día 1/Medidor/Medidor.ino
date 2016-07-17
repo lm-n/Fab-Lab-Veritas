@@ -1,81 +1,59 @@
 /*
-  Arduino Starter Kit example
- Project 3  - Love-O-Meter
+Basado en el Ejemplo Love-O-Meter del Arduino Starter Kit  
+Creado por Scott Fitzgerald el 13 Septiembre 2012
+http://www.arduino.cc/starterKit
+Adaptado y traducido por Luis Morales-Navarro
 
- This sketch is written to accompany Project 3 in the
- Arduino Starter Kit
-
- Parts required:
- 1 TMP36 temperature sensor
- 3 red LEDs
+ Partes requeridas:
+ 1 fotocelda
+ 3 LEDs rojos
  3 220 ohm resistors
 
- Created 13 September 2012
- by Scott Fitzgerald
+Este código es parte del dominio público. 
+*/
 
- http://www.arduino.cc/starterKit
-
- This example code is part of the public domain
- */
-
-// named constant for the pin the sensor is connected to
-const int sensorPin = A0;
-// room temperature in Celcius
-const float baselineTemp = 20.0;
+// nombrar la constante para el pin en el que el sensor está conectado
+const int pinSensor = A0;
 
 void setup() {
-  // open a serial connection to display values
+  // abrir una conexión serial para ver los valores del sensor
   Serial.begin(9600);
-  // set the LED pins as outputs
-  // the for() loop saves some extra coding
-  for (int pinNumber = 2; pinNumber < 5; pinNumber++) {
-    pinMode(pinNumber, OUTPUT);
-    digitalWrite(pinNumber, LOW);
+  // hacer que los pines de los LEDs sean salidas
+  // este for() loop nos salva tiempo al escribir el código haciendo que las operaciones se repitan
+  for (int numeroPin = 2; numeroPin < 5; numeroPin++) {
+    pinMode(numeroPin, OUTPUT);
+    digitalWrite(numeroPin, LOW);
   }
 }
 
 void loop() {
-  // read the value on AnalogIn pin 0
-  // and store it in a variable
-  int sensorVal = analogRead(sensorPin);
+  // leer los valores del sensor 
+  // y guardarlos como una variable
+  int sensorVal = analogRead(pinSensor);
 
-  // send the 10-bit sensor value out the serial port
-  Serial.print("sensor Value: ");
+  // enviar el valor de 10-bit del sensor através del puerto serial
+  Serial.print("Valor del Sensor: ");
   Serial.print(sensorVal);
 
-  // convert the ADC reading to voltage
-  float voltage = (sensorVal / 1024.0) * 5.0;
 
-  // Send the voltage level out the Serial port
-  Serial.print(", Volts: ");
-  Serial.print(voltage);
-
-  // convert the voltage to temperature in degrees C
-  // the sensor changes 10 mV per degree
-  // the datasheet says there's a 500 mV offset
-  // ((volatge - 500mV) times 100)
-  Serial.print(", degrees C: ");
-  float temperature = (voltage - .5) * 100;
-  Serial.println(temperature);
-
-  // if the current temperature is lower than the baseline
-  // turn off all LEDs
-  if (temperature < baselineTemp + 2) {
+  // si el valor del sensor es menor que 100
+  // apagar todos los LEDs
+  if (sensorVal < 100) {
     digitalWrite(2, LOW);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
-  } // if the temperature rises 2-4 degrees, turn an LED on
-  else if (temperature >= baselineTemp + 2 && temperature < baselineTemp + 4) {
+  } // si el valor del sensor está entre 100 y 250 encender un LED
+  else if (sensorVal >= 100 && sensorVal < 250) {
     digitalWrite(2, HIGH);
     digitalWrite(3, LOW);
     digitalWrite(4, LOW);
-  } // if the temperature rises 4-6 degrees, turn a second LED on
-  else if (temperature >= baselineTemp + 4 && temperature < baselineTemp + 6) {
+  } // si el valor del sensor está entre 250 y 750 encender dos LEDs
+  else if (sensorVal >= 250 && sensorVal < 750) {
     digitalWrite(2, HIGH);
     digitalWrite(3, HIGH);
     digitalWrite(4, LOW);
-  } // if the temperature rises more than 6 degrees, turn all LEDs on
-  else if (temperature >= baselineTemp + 6) {
+  } // si el valor del sensor es superior a 750 encender todos los LED
+  else if (sensorVal >= 750) {
     digitalWrite(2, HIGH);
     digitalWrite(3, HIGH);
     digitalWrite(4, HIGH);
